@@ -41,6 +41,7 @@ public class FormulaOneDriverController {
         return newDriver;
     }
 
+    @CrossOrigin
     @PutMapping("/{id}")
     public FormulaOneDriver updateDriver(@PathVariable("id") Long id, @RequestBody FormulaOneDriver driver){
         Optional<FormulaOneDriver> driverUpdateOptional = this.fOneDriverRepository.findById(id);

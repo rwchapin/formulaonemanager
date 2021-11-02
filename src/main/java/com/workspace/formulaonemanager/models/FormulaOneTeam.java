@@ -2,7 +2,9 @@ package com.workspace.formulaonemanager.models;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Formula_One_Team")
@@ -20,7 +22,7 @@ public class FormulaOneTeam {
     @Column(name = "CHASSIS")
     private String chassis;
     @OneToMany(mappedBy = "formulaOneTeam", cascade = CascadeType.ALL)
-    private List<FormulaOneDriver> drivers = new ArrayList<>();
+    private Set<FormulaOneDriver> drivers = new HashSet<>();
     @Column(name = "Image_Source")
     private String imgSrc;
 
@@ -75,11 +77,11 @@ public class FormulaOneTeam {
         this.chassis = chassis;
     }
 
-    public List<FormulaOneDriver> getDrivers() {
+    public Set<FormulaOneDriver> getDrivers() {
         return drivers;
     }
 
-    public void setDrivers(List<FormulaOneDriver> drivers) {
+    public void setDrivers(Set<FormulaOneDriver> drivers) {
         this.drivers = drivers;
 
         for(FormulaOneDriver d : drivers){
