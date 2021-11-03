@@ -5,6 +5,8 @@ import com.workspace.formulaonemanager.models.FormulaOneTeam;
 import com.workspace.formulaonemanager.repositories.FormulaOneTeamRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -41,34 +43,27 @@ public class FormulaOneTeamController {
 
     @PutMapping("/{id}")
     public FormulaOneTeam updateTeam(@PathVariable("id") Long id, @RequestBody FormulaOneTeam team){
-        System.out.println("***Update Start");
         Optional<FormulaOneTeam> teamToUpdateOptional = this.fOneRepository.findById(id);
         if(!teamToUpdateOptional.isPresent()){
             return null;
         }
         FormulaOneTeam teamToUpdate = teamToUpdateOptional.get();
         if(team.getTeamName() != null){
-            System.out.println("***team name update");
             teamToUpdate.setTeamName(team.getTeamName());
         }
         if(team.getEngineManufacturer() != null){
-            System.out.println("***engine update");
             teamToUpdate.setEngineManufacturer(team.getEngineManufacturer());
         }
         if(team.getConstructorPoints() != null){
-            System.out.println("***con points update");
             teamToUpdate.setConstructorPoints(team.getConstructorPoints());
         }
         if(team.getDrivers() != null){
-            System.out.println("***drivers update");
             teamToUpdate.setDrivers(team.getDrivers());
         }
         if(team.getChassis() != null){
-            System.out.println("***chassis update");
             teamToUpdate.setChassis(team.getChassis());
         }
         if(team.getImgSrc() != null){
-            System.out.println("***img update");
             teamToUpdate.setImgSrc(team.getImgSrc());
         }
         FormulaOneTeam updatedTeam = this.fOneRepository.save(teamToUpdate);
@@ -84,5 +79,19 @@ public class FormulaOneTeamController {
         FormulaOneTeam deleteTeam = teamToDeleteOptional.get();
         this.fOneRepository.delete(deleteTeam);
         return deleteTeam;
+    }
+
+    @GetMapping("/search")
+    public List<FormulaOneTeam> searchTeams(@RequestParam(required = false) String name,
+                                            @RequestParam(required = false) String engine){
+        if(Objects.nonNull(name)){
+            return this.fOneRepository.findByTeamName(name);
+        } else if(Objects.nonNull(engine)){
+           return this.fOneRepository.findByEngineManufacturer(engine);
+        } else {
+            throw new NullPointerException("Try Again");
+        }
+
+
     }
 }
